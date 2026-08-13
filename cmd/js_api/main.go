@@ -5,13 +5,13 @@ import (
 	"regexp";
 	"net/http";
 	"io";
-	"encoding/json"
+	"encoding/json";
 )
 
 type WorkableJob struct {
 	Title       string `json:"title"`
 	Workplace   string `json:"workplace"`
-	Type        string `json:"type"`
+	JobType       string `json:"type"`
 	Description string `json:"description"`
 	Location    struct {
 		City    string `json:"city"`
@@ -24,15 +24,16 @@ func main() {
 	pageURL := "https://apply.workable.com/fuseenergy/j/B73DB96A02/"
 	account, shortcode := extractStringRequirements(pageURL)
 	apiURL := buildApiURL(account, shortcode)
-	bodyBytes := getRequest(apiURL)
+	bodyHTML := getJSON(apiURL)
+	jobData := getParsedData(bodyHTML)
 	fmt.Println(account, shortcode)
 	fmt.Println(apiURL)
-	fmt.Println(bodyBytes)
+	// fmt.Println(bodyHTML)
+	fmt.Printf("%+v\n", jobData)
 }
 
 // extract account and shortcode string
 func extractStringRequirements(pageURL string) (account string, shortcode string) {
-	
 	var workableURLPattern = regexp.MustCompile(`apply\.workable\.com/([^/]+)/j/([^/]+)`)
 	m := workableURLPattern.FindStringSubmatch(pageURL)
 	if m == nil {
@@ -52,7 +53,7 @@ func buildApiURL(account string, shortcode string) (url string) {
 }
 
 // get response from API URL 
-func getRequest(url string) string {
+func getJSON(url string) string {
 	response, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err)
@@ -65,4 +66,15 @@ func getRequest(url string) string {
 	}
 	// convert Bytes to String
 	return string(bodyBytes)
+}
+
+// get Parsed Data from Body HTML 
+func getParsedData(bodyhtml string) WorkableJob {
+	var jobData WorkableJob
+	// convert raw data to structured value
+	err := json.Unmarshal([]byte(bodyhtml), &jobData)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return jobData
 }
