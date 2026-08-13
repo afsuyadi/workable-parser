@@ -6,6 +6,8 @@ import (
 	"net/http";
 	"io";
 	"encoding/json";
+	urlReader "github.com/afsuyadi/grab-careers-parser-2/internal/ioRead";
+
 )
 
 type WorkableJob struct {
@@ -33,8 +35,13 @@ func main() {
 	// fmt.Println(apiURL)
 	// fmt.Println(bodyHTML)
 	// fmt.Printf("%+v\n", jobData)
+	urls, err := urlReader.ReadURLs("urls.txt")
+	if err != nil {
+		fmt.Println(err)
+	}
 	fmt.Println(workplace)
 	fmt.Println(jobType)
+	fmt.Println(urls)
 }
 
 // extract account and shortcode string
