@@ -31,11 +31,7 @@ func main() {
 
 	workplace := displayWorkplace(jobData.Workplace)
 	jobType := getJobType(jobData.JobType)
-	// fmt.Println(account, shortcode)
-	// fmt.Println(apiURL)
-	// fmt.Println(bodyHTML)
-	// fmt.Printf("%+v\n", jobData)
-	urls, err := urlReader.ReadURLs("urls.txt")
+	urls, err := urlReader.ReadURLs("../../urls.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -69,12 +65,14 @@ func getJSON(url string) string {
 	response, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err)
+		return ""
 	}
 	defer response.Body.Close()
 	// convert JSON to bytes
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		fmt.Println(err)
+		return ""
 	}
 	// convert Bytes to String
 	return string(bodyBytes)
@@ -87,6 +85,7 @@ func getParsedData(bodyhtml string) WorkableJob {
 	err := json.Unmarshal([]byte(bodyhtml), &jobData)
 	if err != nil {
 		fmt.Println(err)
+		return ""
 	}
 	return jobData
 }
