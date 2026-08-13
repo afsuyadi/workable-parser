@@ -5,9 +5,20 @@ import (
 	"regexp";
 	"net/http";
 	"io";
+	"encoding/json"
 )
 
-
+type WorkableJob struct {
+	Title       string `json:"title"`
+	Workplace   string `json:"workplace"`
+	Type        string `json:"type"`
+	Description string `json:"description"`
+	Location    struct {
+		City    string `json:"city"`
+		Region  string `json:"region"`
+		Country string `json:"country"`
+	} `json:"location"`
+}
 
 func main() {
 	pageURL := "https://apply.workable.com/fuseenergy/j/B73DB96A02/"
@@ -47,9 +58,11 @@ func getRequest(url string) string {
 		fmt.Println(err)
 	}
 	defer response.Body.Close()
+	// convert JSON to bytes
 	bodyBytes, err := io.ReadAll(response.Body)
 	if err != nil {
 		fmt.Println(err)
 	}
-	return bodyBytes
+	// convert Bytes to String
+	return string(bodyBytes)
 }
