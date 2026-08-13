@@ -78,3 +78,32 @@ func getParsedData(bodyhtml string) WorkableJob {
 	}
 	return jobData
 }
+
+// helper function: Day Abbrev.
+func dayAbbreviation(day string) string {
+	switch day {
+	case "mon":
+		return "Monday"
+	case "tue":
+		return "Tuesday"
+	default:
+		return day
+	}
+}
+
+// helper function: display workplace
+func displayWorkplace(raw string) string {
+	switch raw {
+	case true : return "Remote"
+	case false: return "Onsite"
+	default: return raw
+	}
+}
+
+// helper function: job type
+func getJobType(jobType string) string {
+	switch jobType {
+	case "full": return "Full Time"
+	default: return jobType
+	}
+}
