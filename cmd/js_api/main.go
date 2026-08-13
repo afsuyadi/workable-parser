@@ -22,7 +22,17 @@ type WorkableJob struct {
 	} `json:"location"`
 }
 
+type jobRecord struct {
+	Title		string
+	Workplace	string
+	JobType     string
+	Location    string
+	Description string
+	PageURL     string
+}
+
 func main() {
+	var rows []jobRecord
 	urls, err := urlReader.ReadURLs("../../urls.txt")
 	if err != nil {
 		fmt.Println(err)
@@ -36,11 +46,18 @@ func main() {
 
 		workplace := displayWorkplace(jobData.Workplace)
 		jobType := getJobType(jobData.JobType)
-		
-		fmt.Println(workplace)
-		fmt.Println(jobType)
-		// fmt.Println(urls)
+
+		row := jobRecord{
+			Title:       jobData.Title,
+			Workplace:   workplace,
+			JobType:     jobType,
+			Location:    jobData.Location.City + ", " + jobData.Location.Country,
+			Description: jobData.Description,
+			PageURL:     url,
+		}
+		rows = append(rows, row)
 	}
+	fmt.Println(rows)
 		
 }
 
@@ -53,7 +70,7 @@ func extractStringRequirements(pageURL string) (account string, shortcode string
 	}
 	accountId := m[1]
 	shortcodeId := m[2]
-	fmt.Println(m)
+	// fmt.Println(m)
 	return accountId, shortcodeId
 }
 // ourput: Shortcode and Account
