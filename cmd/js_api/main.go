@@ -26,10 +26,15 @@ func main() {
 	apiURL := buildApiURL(account, shortcode)
 	bodyHTML := getJSON(apiURL)
 	jobData := getParsedData(bodyHTML)
-	fmt.Println(account, shortcode)
-	fmt.Println(apiURL)
+
+	workplace := displayWorkplace(jobData.Workplace)
+	jobType := getJobType(jobData.JobType)
+	// fmt.Println(account, shortcode)
+	// fmt.Println(apiURL)
 	// fmt.Println(bodyHTML)
-	fmt.Printf("%+v\n", jobData)
+	// fmt.Printf("%+v\n", jobData)
+	fmt.Println(workplace)
+	fmt.Println(jobType)
 }
 
 // extract account and shortcode string
@@ -94,11 +99,13 @@ func dayAbbreviation(day string) string {
 // helper function: display workplace
 func displayWorkplace(raw string) string {
 	switch raw {
-	case true : return "Remote"
-	case false: return "Onsite"
+	case "remote": return "Remote"
+	case "onsite": return "Onsite"
+	case "hybrid": return "Hybrid"
 	default: return raw
 	}
 }
+
 
 // helper function: job type
 func getJobType(jobType string) string {
