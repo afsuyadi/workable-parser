@@ -3,6 +3,8 @@ package main
 import (
 	"fmt";
 	"regexp";
+	"net/http";
+	"io";
 )
 
 
@@ -10,7 +12,11 @@ import (
 func main() {
 	pageURL := "https://apply.workable.com/fuseenergy/j/B73DB96A02/"
 	account, shortcode := extractStringRequirements(pageURL)
+	apiURL := buildApiURL(account, shortcode)
+	bodyBytes := getRequest(apiURL)
 	fmt.Println(account, shortcode)
+	fmt.Println(apiURL)
+	fmt.Println(bodyBytes)
 }
 
 // extract account and shortcode string
@@ -29,3 +35,21 @@ func extractStringRequirements(pageURL string) (account string, shortcode string
 // ourput: Shortcode and Account
 
 // build API URL using data from network tab
+func buildApiURL(account string, shortcode string) (url string) {
+	result := fmt.Sprintf("https://apply.workable.com/api/v2/accounts/%s/jobs/%s", account, shortcode)
+	return result
+}
+
+// get response from API URL 
+func getRequest(url string) string {
+	response, err := http.Get(url)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer response.Body.Close()
+	bodyBytes, err := io.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return bodyBytes
+}
