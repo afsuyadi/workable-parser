@@ -23,21 +23,25 @@ type WorkableJob struct {
 }
 
 func main() {
-	pageURL := "https://apply.workable.com/fuseenergy/j/B73DB96A02/"
-	account, shortcode := extractStringRequirements(pageURL)
-	apiURL := buildApiURL(account, shortcode)
-	bodyHTML := getJSON(apiURL)
-	jobData := getParsedData(bodyHTML)
-
-	workplace := displayWorkplace(jobData.Workplace)
-	jobType := getJobType(jobData.JobType)
 	urls, err := urlReader.ReadURLs("../../urls.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(workplace)
-	fmt.Println(jobType)
-	fmt.Println(urls)
+	// pageURL := "https://apply.workable.com/fuseenergy/j/B73DB96A02/"
+	for _, url := range urls {
+		account, shortcode := extractStringRequirements(url)
+		apiURL := buildApiURL(account, shortcode)
+		bodyHTML := getJSON(apiURL)
+		jobData := getParsedData(bodyHTML)
+
+		workplace := displayWorkplace(jobData.Workplace)
+		jobType := getJobType(jobData.JobType)
+		
+		fmt.Println(workplace)
+		fmt.Println(jobType)
+		// fmt.Println(urls)
+	}
+		
 }
 
 // extract account and shortcode string
@@ -85,28 +89,15 @@ func getParsedData(bodyhtml string) WorkableJob {
 	err := json.Unmarshal([]byte(bodyhtml), &jobData)
 	if err != nil {
 		fmt.Println(err)
-		return ""
 	}
 	return jobData
-}
-
-// helper function: Day Abbrev.
-func dayAbbreviation(day string) string {
-	switch day {
-	case "mon":
-		return "Monday"
-	case "tue":
-		return "Tuesday"
-	default:
-		return day
-	}
 }
 
 // helper function: display workplace
 func displayWorkplace(raw string) string {
 	switch raw {
 	case "remote": return "Remote"
-	case "onsite": return "Onsite"
+	case "on_site": return "Onsite"
 	case "hybrid": return "Hybrid"
 	default: return raw
 	}
