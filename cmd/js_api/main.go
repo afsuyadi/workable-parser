@@ -6,6 +6,9 @@ import (
 	"net/http";
 	"io";
 	"encoding/json";
+	"encoding/csv";
+	"os";
+	"time";
 	urlReader "github.com/afsuyadi/grab-careers-parser-2/internal/ioRead";
 
 )
@@ -37,7 +40,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	// pageURL := "https://apply.workable.com/fuseenergy/j/B73DB96A02/"
+	// get rows for CSV
 	for _, url := range urls {
 		account, shortcode := extractStringRequirements(url)
 		apiURL := buildApiURL(account, shortcode)
@@ -57,7 +60,25 @@ func main() {
 		}
 		rows = append(rows, row)
 	}
-	fmt.Println(rows)
+	// fmt.Println(rows)
+
+	// get metadata
+	fileName := time.Now().Format("2006-01-02") + ".csv"
+	file, err := os.Create(fileName)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+	writer.Write([]string{"Title", "Workplace", "Job Type", "Location", "Description", "Page URL"})
+	for _, row := range rows {
+		writer.Write([]string{row.Title, row.Workplace, row.JobType, row.Location, row.Description, row.PageURL})
+
+}	
+
 		
 }
 
