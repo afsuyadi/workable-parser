@@ -12,8 +12,6 @@ import (
 	urlReader "github.com/afsuyadi/workable-parser/pkg/urls-reader"
 )
 
-
-
 func main() {
 	urls, err := urlReader.ReadURLs("urls.txt")
 	if err != nil {
