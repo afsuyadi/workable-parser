@@ -9,7 +9,7 @@ import (
 	"encoding/csv";
 	"os";
 	"time";
-	urlReader "github.com/afsuyadi/grab-careers-parser-2/internal/ioRead";
+	urlReader "github.com/afsuyadi/grab-careers-parser-2/pkg/urls-reader";
 
 )
 
