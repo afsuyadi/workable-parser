@@ -75,6 +75,7 @@ func scrapeJob(ctx context.Context, pageURL string) (jobRecord, error) {
 		chromedp.Navigate(pageURL),
 		// wait for job title to appear as an indicator
 		chromedp.WaitVisible(`[data-ui="job-title"]`, chromedp.ByQuery),
+		// give delay time to ensure all elements are written
 		chromedp.Sleep(2*time.Second),
 	)
 	if err != nil {
