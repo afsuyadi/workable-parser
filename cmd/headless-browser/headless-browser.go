@@ -11,7 +11,7 @@ import (
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
 
-	urlReader "github.com/afsuyadi/grab-careers-parser-2/pkg/urls-reader"
+	urlReader "github.com/afsuyadi/workable-parser/pkg/urls-reader"
 )
 
 type jobRecord struct {

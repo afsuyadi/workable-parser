@@ -1,4 +1,4 @@
-module github.com/afsuyadi/grab-careers-parser-2
+module github.com/afsuyadi/workable-parser
 
 go 1.26.5
 
