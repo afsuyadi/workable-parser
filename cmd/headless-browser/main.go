@@ -19,8 +19,14 @@ func main() {
 		return
 	}
 
+	// add Allocator so chrome can run with sandbox
+	opts := append(chromedp.DefaultExecAllocatorOptions[:], chromedp.NoSandbox)
+	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancel()
+
 	// start a browser instance
-	browserCtx, cancel := chromedp.NewContext(context.Background())
+	browserCtx, cancel := chromedp.NewContext(allocCtx)
+
 	defer cancel()
 
 	// create a ctx that will be reused
