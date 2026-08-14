@@ -75,11 +75,12 @@ func scrapeJob(ctx context.Context, pageURL string) (jobRecord, error) {
 		chromedp.Navigate(pageURL),
 		// wait for job title to appear as an indicator
 		chromedp.WaitVisible(`[data-ui="job-title"]`, chromedp.ByQuery),
+		chromedp.Sleep(2*time.Second),
 	)
 	if err != nil {
 		return jobRecord{}, err
 	}
-	fmt.Println(extractText(ctx, `[data-ui="job-title"]`))
+	// fmt.Println(extractText(ctx, `[data-ui="job-title"]`))
 	return jobRecord{
 		Title:       extractText(ctx, `[data-ui="job-title"]`),
 		Workplace:   extractText(ctx, `[data-ui="job-workplace"]`),
@@ -104,5 +105,6 @@ func extractText(ctx context.Context, selector string) string {
 	if err := chromedp.Run(ctx, chromedp.Text(selector, &text, chromedp.ByQuery)); err != nil {
 		return ""
 	}
+	fmt.Println(text)
 	return strings.TrimSpace(text)
 }
