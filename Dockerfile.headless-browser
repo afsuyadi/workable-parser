@@ -1,0 +1,30 @@
+# define what version of go image do we use
+FROM golang:1.26.5
+
+# make dir inside this root path
+WORKDIR /app
+
+# Copy and Paste the file you want into the image
+COPY go.mod go.sum ./
+
+# run the cli go mod download inside this image
+RUN go mod download
+
+# install chromium in the image
+RUN apt-get update && apt-get install -y --no-install-recommends chromium \
+    && rm -rf /var/lib/apt/lists/*
+
+# copy all relevant files into the image
+COPY cmd/headless-browser/*.go ./cmd/headless-browser/
+COPY pkg/urls-reader/*.go ./pkg/urls-reader/
+COPY ./output/urls.txt ./output/
+
+# compile the application
+RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping ./cmd/headless-browser
+
+# run the binary file
+CMD ["/docker-gs-ping"]
+
+# CLI to run docker & save the output file
+# docker build -f Dockerfile.headless-browser -t headless-browser .
+# docker run --rm -v "$(pwd)/output:/app" headless-browser
