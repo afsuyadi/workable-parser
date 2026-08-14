@@ -24,7 +24,7 @@ type jobRecord struct {
 }
 
 func main() {
-	urls, err := urlReader.ReadURLs("../../urls.txt")
+	urls, err := urlReader.ReadURLs("urls.txt")
 	if err != nil {
 		fmt.Println(err)
 		return
