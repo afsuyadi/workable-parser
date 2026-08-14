@@ -1,0 +1,20 @@
+# define what version of go image do we use
+FROM golang:1.26.5
+
+# make dir inside this root path
+WORKDIR /app
+
+# Copy and Paste the file you want into the image
+COPY go.mod go.sum ./
+
+# run the cli go mod download inside this image
+RUN go mod download
+
+# copy this source code into the image
+COPY *.go ./js-network-api
+
+# compile the application
+RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping
+
+# run the binary file
+CMD ["/docker-gs-ping"]
