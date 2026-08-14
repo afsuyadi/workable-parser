@@ -51,8 +51,5 @@ func main() {
 	writer.Write([]string{"Title", "Workplace", "Job Type", "Location", "Description", "Page URL"})
 	for _, row := range rows {
 		writer.Write([]string{row.Title, row.Workplace, row.JobType, row.Location, row.Description, row.PageURL})
-
 }	
-
-		
 }
