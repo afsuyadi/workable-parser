@@ -1,15 +1,15 @@
 package main
 
 import (
-	"fmt";
-	"regexp";
-	"net/http";
-	"io";
-	"encoding/json";
-	"encoding/csv";
-	"os";
-	"time";
-	urlReader "github.com/afsuyadi/workable-parser/pkg/urls-reader";
+	"fmt"
+	"regexp"
+	"net/http"
+	"io"
+	"encoding/json"
+	"encoding/csv"
+	"os"
+	"time"
+	urlReader "github.com/afsuyadi/workable-parser/pkg/urls-reader"
 
 )
 
